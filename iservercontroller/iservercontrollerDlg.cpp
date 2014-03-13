@@ -3,7 +3,7 @@
 //
 
 #include "stdafx.h"
-#include <string>
+#include <cstring>
 #include "iservercontroller.h"
 #include "iservercontrollerDlg.h"
 #include "afxdialogex.h"
@@ -202,73 +202,83 @@ namespace IServerController
 
 	bool CiservercontrollerDlg::ParseIServerConfig(CString iConfigFile)
 	{
-		CFile lConfigFile(iConfigFile.GetBuffer(), CFile::modeRead);
-		lConfigFile.SeekToBegin();
-
-		ULONGLONG lTotalSize = lConfigFile.GetLength();
-		std::string lConfigData;
-
-		Auto::auto_buffer<char> lConfigBuf(lTotalSize + 1, &mMemoryhandler);
-		if (lConfigBuf.empty())
+		try 
 		{
-			return false;
-		}
-		lConfigFile.Read(lConfigBuf.begin(), lTotalSize);
-		lConfigData = lConfigBuf.begin();
+			CFile lConfigFile(iConfigFile.GetBuffer(), CFile::modeRead);
+			lConfigFile.SeekToBegin();
 
-		Json::Value lRoot;
-		Json::Reader lReader;
-		if (!lReader.parse(lConfigData, lRoot))
-		{
-			std::string lError = lReader.getFormattedErrorMessages();
+			ULONGLONG lTotalSize = lConfigFile.GetLength();
+			std::string lConfigData;
 
-			return false;
-		}
-		
-		/*
-		*	{
-		*	"iserver" :
-		*	{
-		*		"events":
-		*		[
-		*			"event1", "event2"	
-		*		],
-		*		"semaphore":
-		*		[
-		*			"sema1", "sema2"
-		*		]
-		*	}
-		*	}
-		*/
-
-		// show events
-		const Json::Value lEventsConfig = lRoot["iserver"]["events"];
-		std::string lEventsNameString = "";
-		for (int iter = 0; iter < lEventsConfig.size(); ++iter)
-		{
-			// dbgheap pFirstBlock == pHead
-			// lEventsNameString = lEventsConfig[iter].asString();
-
-			lEventsNameString = lEventsConfig[iter].asCString();
-			Auto::auto_buffer<wchar_t> lEventsName(lEventsNameString.length() + 1);
-			if (!::MultiByteToWideChar(
-				CP_UTF8,
-				MB_ERR_INVALID_CHARS,
-				lEventsNameString.c_str(),
-				lEventsNameString.length(),
-				lEventsName.begin(),
-				lEventsName.size()
-				))
+			Auto::auto_buffer<char> lConfigBuf(lTotalSize + 1, &mMemoryhandler);
+			if (lConfigBuf.empty())
 			{
-				// handle error
-				::GetLastError();
-				continue;
+				return false;
 			}
-			lEventsName[lEventsNameString.length()] = L'\0';
-			mIServerEvents.InsertString(iter, lEventsName.begin());
+			lConfigFile.Read(lConfigBuf.begin(), lTotalSize);
+			lConfigData = lConfigBuf.begin();
+
+			Json::Features features = Json::Features::strictMode();
+			Json::Value lRoot;
+			Json::Reader lReader(features);
+			if (!lReader.parse(lConfigData, lRoot, false))
+			{
+				std::string lError = lReader.getFormattedErrorMessages();
+
+				return false;
+			}
+
+			/*
+			*	{
+			*	"iserver" :
+			*	{
+			*		"events":
+			*		[
+			*			"event1", "event2"	
+			*		],
+			*		"semaphore":
+			*		[
+			*			"sema1", "sema2"
+			*		]
+			*	}
+			*	}
+			*/
+
+			// show events
+			const Json::Value lEventsConfig = lRoot["iserver"]["events"];
+			std::string lEventsNameString = "";
+			for (int iter = 0; iter < lEventsConfig.size(); ++iter)
+			{
+				// dbgheap pFirstBlock == pHead
+				// lEventsNameString = lEventsConfig[iter].asString();
+
+				if (lEventsConfig[iter].isString())
+				{
+					lEventsNameString = lEventsConfig[iter].asCString();
+				}
+				Auto::auto_buffer<wchar_t> lEventsName(lEventsNameString.length() + 1);
+				if (!::MultiByteToWideChar(
+					CP_UTF8,
+					MB_ERR_INVALID_CHARS,
+					lEventsNameString.c_str(),
+					lEventsNameString.length(),
+					lEventsName.begin(),
+					lEventsName.size()
+					))
+				{
+					// handle error
+					::GetLastError();
+					continue;
+				}
+				lEventsName[lEventsNameString.length()] = L'\0';
+				mIServerEvents.InsertString(iter, lEventsName.begin());
+
+			}
+		}
+		catch (...)
+		{
 
 		}
-
 		return true;
 	}
 

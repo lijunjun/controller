@@ -216,7 +216,7 @@ int main()
 	TestMemoryMgt();
 	//TestMemoryAlloc();
 
-	//TestNTEnv();
+	// TestNTEnv();
 
 	system("pause");
 	return 1;

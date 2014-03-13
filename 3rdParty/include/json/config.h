@@ -41,6 +41,10 @@
 #  endif
 # endif
 
+#ifndef JSON_DLL_BUILD
+#define JSON_DLL_BUILD
+#endif
+
 # ifdef JSON_IN_CPPTL
 #  define JSON_API CPPTL_API
 # elif defined(JSON_DLL_BUILD)
