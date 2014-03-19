@@ -30,6 +30,9 @@
     <ClInclude Include="critical_section.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="shmemy.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
