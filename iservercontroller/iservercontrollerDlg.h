@@ -4,7 +4,7 @@
 
 #pragma once
 #include "afxwin.h"
-#include "../memorymgt/memorymgt.h"
+#include "../memorymgt/malloc.h"
 
 namespace IServerController
 {
