@@ -1,4 +1,5 @@
 
+#include "stdafx.h"
 #include "gtest/gtest.h"
 #include <Windows.h>
 #include "../../log/message.h"
@@ -36,7 +37,7 @@ bool TestEvent(std::wstring iEventName)
 					  return false;
 		}
 	}
-
+	return true;
 }
 
 TEST(IServerEventTest)
@@ -53,11 +54,4 @@ TEST(IServerEventTest)
 		EXPECT_TRUE(TestEvent(lEventName));
 	}
 	
-}
-
-int main(int argc, wchar_t* argv[] )
-{
-	testing::InitGoogleTest(&argc, argv);
-
-	return RUN_ALL_TESTS();
 }
