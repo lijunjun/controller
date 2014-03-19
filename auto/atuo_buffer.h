@@ -2,7 +2,8 @@
 #ifndef AUTOBUFFER_H
 #define AUTOBUFFER_H
 
-#include "../memorymgt/memorymgt.h"
+#include <assert.h>
+#include "../memorymgt/malloc.h"
 
 namespace Auto
 {
@@ -22,7 +23,7 @@ namespace Auto
 			: mMemoryHandler(iHandler)
 		{
 			mBoundry = iSize;
-			_ASSERT(mBoundry >= 0);
+			assert(mBoundry >= 0);
 			mMemoryHandler == NULL ? mpData = ::new data_type[mBoundry] :
 				mpData = new (mMemoryHandler)data_type[mBoundry];
 		}
@@ -30,6 +31,16 @@ namespace Auto
 		~auto_buffer()
 		{
 			clear();
+		}
+
+		void reset(size_type iSize, MemoryMgt::Cmemoryhandler* iHandler = NULL)
+		{
+			clear();
+			mBoundry = iSize;
+			assert(mBoundry >= 0);
+			mMemoryHandler = iHandler;
+			mMemoryHandler == NULL ? mpData = ::new data_type[mBoundry] :
+				mpData = new (mMemoryHandler)data_type[mBoundry];
 		}
 
 		pointer begin()
