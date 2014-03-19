@@ -1,8 +1,8 @@
-// memorymgt.cpp : Defines the exported functions for the DLL application.
+// malloc.cpp : Defines the exported functions for the DLL application.
 //
 
 #include "stdafx.h"
-#include "memorymgt.h"
+#include "malloc.h"
 #include <iostream>
 #include <new.h>
 
@@ -60,13 +60,6 @@
 
 namespace MemoryMgt
 {
-	// This is the constructor of a class that has been exported.
-	// see memorymgt.h for the class definition
-	Cmemorymgt::Cmemorymgt()
-	{
-		return;
-	}
-
 	Cmemoryhandler::Cmemoryhandler()
 	{
 

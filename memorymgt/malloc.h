@@ -7,16 +7,11 @@
 #ifndef MEMORYMGT_H
 #define MEMORYMGT_H
 
-#ifdef MEMORYMGT_EXPORTS
-#define MEMORYMGT_API __declspec(dllexport)
-#else
-#define MEMORYMGT_API __declspec(dllimport)
-#endif
+#include "config.h"
 
 /*
 * simple testing overload new and delete
 */
-
 namespace MemoryMgt
 {
 	class MEMORYMGT_API Cmemoryhandler
@@ -25,19 +20,9 @@ namespace MemoryMgt
 		Cmemoryhandler();
 
 		void* alloc(size_t iSize);
-
 		void free(void* iPtr);
-
 	private:
-
-
 	};
-
-	class MEMORYMGT_API Cmemorymgt {
-	public:
-		Cmemorymgt(void);
-	};
-
 }
 
 MEMORYMGT_API void* operator new (size_t iSize, MemoryMgt::Cmemoryhandler* iMemoryHdl);
