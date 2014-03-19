@@ -6,7 +6,7 @@
 #include "controller.h"
 #include "../module/module.h"
 #include "../smartheap/smartheap.h"
-#include "../memorymgt/memorymgt.h"
+#include "../memorymgt/malloc.h"
 
 typedef BOOL(FAR WINAPI *PARPGetProcessMemoryInfo)(HANDLE, PPROCESS_MEMORY_COUNTERS, DWORD);
 typedef BOOL(FAR WINAPI *PARPEnumProcesses)(DWORD*, DWORD, DWORD*);
