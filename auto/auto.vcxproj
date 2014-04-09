@@ -64,6 +64,10 @@
     <PostBuildEvent>
       <Command>CALL "$(SolutionDir)config\copy.bat" "$(ProjectDir)" "$(Configuration)" "$(ProjectName)" "$(SolutionDir)"</Command>
     </PostBuildEvent>
+    <CustomBuildStep>
+      <Outputs>
+      </Outputs>
+    </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -84,6 +88,10 @@
     <PostBuildEvent>
       <Command>CALL "$(SolutionDir)config\copy.bat" "$(ProjectDir)" "$(Configuration)" "$(ProjectName)" "$(SolutionDir)"</Command>
     </PostBuildEvent>
+    <CustomBuildStep>
+      <Outputs>
+      </Outputs>
+    </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
